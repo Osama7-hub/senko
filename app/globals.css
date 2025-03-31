@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* csslint-ignore:start */
+/* @random; يجب أن يتم تجاهل التحذير لهذه القاعدة الآن */
+/* csslint-ignore:end */
+
+:root {
+  --color-primary: #17b8a6 !important;
+  --color-secondary: #027e71 !important;
+  --color-light: #f0fdf4 !important;
+}
+
+.themeOrange {
+  --color-primary: #ff745d !important;
+  --color-secondary: #395b65 !important;
+  --color-light: #fffbf8 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* ضبط الأنماط العامة للـ RTL و LTR */
+/* html[dir="rtl"] body {
+  font-family: "Tajawal", sans-serif; 
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="ltr"] body {
+  font-family: "Tajawal", sans-serif; 
+  direction: ltr;
+  text-align: left;
+} */
+
+/* تحسين ترتيب العناصر عند التبديل */
+/* html[dir="rtl"] .flex {
+  flex-direction: row-reverse;
+} */
+
+html body {
+  font-family: "Tajawal", sans-serif;
+  /* font-family: "Cairo", sans-serif; */
+  direction  : rtl;
+  /* @apply flex justify-center items-center bg-gradient-to-r from-primary to-secondary h-screen; */
+}
+
+/******** بداية تنسيق عناصر المحرر ********/
+.ProseMirror {
+  @apply min-h-[250px]
+}
+
+.ProseMirror:focus {
+ @apply border-none outline-none
+}
+
+.ProseMirror h2, 
+.content h2 {
+  @apply my-3 font-bold text-gray-900 dark:text-gray-100 text-2xl;
+}
+
+.ProseMirror ul,
+.content ul {
+  @apply my-4 px-8 list-disc;
+}
+
+.ProseMirror ol,
+.content ol {
+  @apply my-4 px-8 list-decimal; 
+}
+
+.ProseMirror li,
+.content li {
+  @apply my-1;
+}
+
+.ProseMirror pre,
+.content pre {
+  @apply bg-[#1e1e1e] shadow-inner m-2 p-4 rounded overflow-x-auto font-mono text-[#d4d4d4] text-sm text-left leading-relaxed;
+  font-family     : 'Consolas', 'Courier New', monospace;
+  direction       : ltr;
+}
+
+.ProseMirror pre code.hljs,
+.content pre code.hljs {
+  @apply bg-transparent p-0;
+}
+
+/******** نهاية تنسيق عناصر المحرر ********/
+
+/* ================================== */
+
+.vote-button,
+.saved-button {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.vote-button:active,
+.saved-button:active {
+  transform: scale(1.2);
+}
+
+.animate-youtube {
+  animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+/* ====================== */

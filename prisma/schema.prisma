@@ -1,0 +1,161 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // ستضع هنا رابط الاتصال بقاعدة البيانات
+}
+
+// 1️⃣ جدول المستخدمين (User)
+model User {
+  id             String          @id @default(uuid())
+  name           String?
+  email          String          @unique
+  emailVerified  DateTime?       @map("email_verified")
+  password       String?
+  image          String?
+  role           String          @default("user") // حقل جديد لتحديد دور المستخدم (user/admin)
+  accounts       Account[]
+  sessions       Session[]
+  answers        Answer[] // ربط المستخدم بإجاباته
+  createdAt      DateTime        @default(now())
+  Vote           Vote[]
+  savedQuestions SavedQuestion[]
+}
+
+// 2️⃣ جدول الأسئلة (Question)
+model Question {
+  id         String          @id @default(uuid())
+  title      String // عنوان السؤال
+  content    String // شرح إضافي للسؤال
+  category   String[] // فئة السؤال (JavaScript, React, Next.js...)
+  answers    Answer[] // العلاقة مع الإجابات
+  usersSaved SavedQuestion[]
+  createdAt  DateTime        @default(now())
+}
+
+// ✅ جدول وسيط بين `User` و `Question`
+model SavedQuestion {
+  userId     String
+  questionId String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@id([userId, questionId]) // مفتاح أساسي مركب لمنع تكرار الحفظ
+}
+
+// 3️⃣ جدول الإجابات (Answer)
+model Answer {
+  id         String   @id @default(uuid())
+  content    String // نص الإجابة
+  isOfficial Boolean  @default(false) // هل هي إجابة رسمية؟
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String
+  user       User?    @relation(fields: [userId], references: [id]) // إجابة المستخدم
+  userId     String?
+  createdAt  DateTime @default(now())
+  votes      Vote[]
+}
+
+// ☑️ جدول التصويت (Vote)
+model Vote {
+  id       String @id @default(uuid())
+  answer   Answer @relation(fields: [answerId], references: [id], onDelete: Cascade)
+  answerId String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  value    Int // 1 للصوت الإيجابي، -1 للصوت السلبي
+
+  @@unique([answerId, userId]) // يمنع المستخدم من التصويت أكثر من مرة لنفس الإجابة
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ============================= Quiz App ===============================
+
+model Category {
+  id        String         @id @default(cuid())
+  name      String         @unique
+  questions QuizQuestion[]
+}
+
+model QuizQuestion {
+  id            String           @id @default(cuid())
+  text          String
+  type          QuizQuestionType
+  categoryName  String
+  category      Category         @relation(fields: [categoryName], references: [name], onDelete: Cascade)
+  options       Option[]
+  matchingPairs MatchingPair[]
+  createdAt     DateTime         @default(now())
+}
+
+enum QuizQuestionType {
+  MULTIPLE_CHOICE
+  MATCHING
+}
+
+model Option {
+  id         String       @id @default(cuid())
+  text       String
+  isCorrect  Boolean
+  questionId String
+  question   QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model MatchingPair {
+  id         String       @id @default(cuid())
+  leftItem   String
+  rightItem  String
+  questionId String
+  question   QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model QuizSession {
+  id        String   @id @default(cuid())
+  userId    String? // يمكن تخزينه إذا كان هناك تسجيل دخول
+  score     Int
+  questions String // يمكن تخزين الـ IDs للأسئلة المستخدمة في الاختبار
+  createdAt DateTime @default(now())
+}

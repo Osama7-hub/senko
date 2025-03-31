@@ -1,0 +1,34 @@
+{
+    "css.customData": [
+        "./.vscode/tailwind.json"
+    ],
+    "tailwindCSS.experimental.classRegex": [
+        "className=\"([^\"]*)\""
+    ],
+    "tailwindCSS.includeLanguages": {
+        "css": "css"
+    },
+    "tailwindSorter.categoryOrder": {
+        "sortOrder": [
+            "box",
+            "flex",
+            "grid",
+            "bg-visual",
+            "margins",
+            "borders",
+            "sizing",
+            "typography",
+            "transformations",
+            "other"
+        ]
+    },
+    "css.lint.unknownAtRules": "warning", // التحقق العام نشط
+    "tailwindCSS.lint.invalidTailwindDirective": "ignore", // تجاهل تحذيرات Tailwind
+    "files.associations": {
+        "*.css": "tailwindcss" // ربط ملفات CSS بـ Tailwind
+    },
+    "css.validate": true, // تفعيل التحقق من CSS
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit"
+    }
+}
