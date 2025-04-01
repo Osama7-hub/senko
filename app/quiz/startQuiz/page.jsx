@@ -10,6 +10,7 @@ import QuizResult from "@/app/_components/quiz/QuizResult";
 import { SkeletonStartQuiz } from "@/app/_components/Skeletons";
 import { FormattedMessage } from "react-intl";
 
+export const dynamic = "force-dynamic"; // ⬅️ إجبار الصفحة على أن تكون ديناميكية بالكامل
 
 const QuizPage = () => {
     const searchParams = useSearchParams();
