@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import QuestionTable from "./QuestionTable";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
@@ -55,88 +55,90 @@ export default function QuestionsPage() {
 
     return (
         <MainLayout header={<span className="mb-4 font-bold text-2xl">إدارة الأسئلة</span>}>
-            <div className="p-6">
-                <Breadcrumb homelink={'/admin'} homeLinekTxt={<FormattedMessage id='breadcrumbMain' />} link1={'/admin/quiz'} link1Text={<FormattedMessage id='manageQuestions' />} />
+            <Suspense fallback={<div>Loading ...</div>}>
+                <div className="p-6">
+                    <Breadcrumb homelink={'/admin'} homeLinekTxt={<FormattedMessage id='breadcrumbMain' />} link1={'/admin/quiz'} link1Text={<FormattedMessage id='manageQuestions' />} />
 
-                {/* 🔹 البحث وتصنيف الأسئلة */}
-                <div className="flex md:flex-row flex-col items-center gap-2 mb-4 w-full">
-                    <div className="relative w-full md:w-1/2">
-                        <input
-                            type="text"
-                            value={search}
+                    {/* 🔹 البحث وتصنيف الأسئلة */}
+                    <div className="flex md:flex-row flex-col items-center gap-2 mb-4 w-full">
+                        <div className="relative w-full md:w-1/2">
+                            <input
+                                type="text"
+                                value={search}
+                                onChange={(e) => {
+                                    setSearch(e.target.value);
+                                    updateURL({ page: 1, category, search: e.target.value });
+                                }}
+                                placeholder={intl.formatMessage({ id: "input.search" })} // استخدام الترجمة هنا
+                                className="dark:bg-gray-700 shadow p-2 border focus:border-primary dark:border-gray-600 rounded focus:outline-none w-full"
+                                required
+                            />
+                            <span className="absolute inset-y-0 place-content-center grid w-10 text-gray-500 pointer-events-none end-0">
+                                <Search size={20} className="text-gray-400" />
+                            </span>
+                        </div>
+
+                        <select
+                            value={category}
                             onChange={(e) => {
-                                setSearch(e.target.value);
-                                updateURL({ page: 1, category, search: e.target.value });
+                                setCategory(e.target.value);
+                                updateURL({ page: 1, category: e.target.value, search });
                             }}
-                            placeholder={intl.formatMessage({ id: "input.search" })} // استخدام الترجمة هنا
-                            className="dark:bg-gray-700 shadow p-2 border focus:border-primary dark:border-gray-600 rounded focus:outline-none w-full"
-                            required
-                        />
-                        <span className="absolute inset-y-0 place-content-center grid w-10 text-gray-500 pointer-events-none end-0">
-                            <Search size={20} className="text-gray-400" />
-                        </span>
+                            // className="p-2 border"
+                            className="flex-grow-0 dark:bg-gray-700 shadow p-2 px-4 border focus:border-primary dark:border-gray-600 rounded focus:outline-none w-full md:w-fit"
+                        >
+                            <option value="">كل الفئات</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="react.js">React</option>
+                            <option value="nextjs">Next.js</option>
+                        </select>
                     </div>
 
-                    <select
-                        value={category}
-                        onChange={(e) => {
-                            setCategory(e.target.value);
-                            updateURL({ page: 1, category: e.target.value, search });
-                        }}
-                        // className="p-2 border"
-                        className="flex-grow-0 dark:bg-gray-700 shadow p-2 px-4 border focus:border-primary dark:border-gray-600 rounded focus:outline-none w-full md:w-fit"
-                    >
-                        <option value="">كل الفئات</option>
-                        <option value="javascript">JavaScript</option>
-                        <option value="react.js">React</option>
-                        <option value="nextjs">Next.js</option>
-                    </select>
-                </div>
 
+                    {loading ? (
+                        <p>جارٍ تحميل الأسئلة...</p>
+                    ) : (
+                        <>
+                            <QuestionTable questions={questions} setQuestions={setQuestions} />
 
-                {loading ? (
-                    <p>جارٍ تحميل الأسئلة...</p>
-                ) : (
-                    <>
-                        <QuestionTable questions={questions} setQuestions={setQuestions} />
+                            <div className="flex md:flex-row flex-col-reverse justify-between items-center">
+                                {/* 🔹 التحكم في الترقيم */}
+                                <div className="flex items-center gap-2 mt-4">
+                                    <button
+                                        disabled={page === 1}
+                                        onClick={() => {
+                                            setPage(page - 1);
+                                            updateURL({ page: page - 1, category, search });
+                                        }}
+                                        className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 disabled:opacity-25 shadow px-4 py-1 border dark:border-gray-700 rounded disabled:cursor-no-drop"
+                                    >
+                                        <ChevronRight size={18} />
+                                    </button>
+                                    <span>الصفحة {page} من {totalPages}</span>
+                                    <button
+                                        disabled={page === totalPages}
+                                        onClick={() => {
+                                            setPage(page + 1);
+                                            updateURL({ page: page + 1, category, search });
+                                        }}
+                                        className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 disabled:opacity-25 shadow px-4 py-1 border dark:border-gray-700 rounded disabled:cursor-no-drop"
+                                    >
+                                        <ChevronLeft size={18} />
+                                    </button>
+                                </div>
 
-                        <div className="flex md:flex-row flex-col-reverse justify-between items-center">
-                            {/* 🔹 التحكم في الترقيم */}
-                            <div className="flex items-center gap-2 mt-4">
                                 <button
-                                    disabled={page === 1}
-                                    onClick={() => {
-                                        setPage(page - 1);
-                                        updateURL({ page: page - 1, category, search });
-                                    }}
-                                    className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 disabled:opacity-25 shadow px-4 py-1 border dark:border-gray-700 rounded disabled:cursor-no-drop"
+                                    onClick={() => router.push("/admin/questions/add")} // الانتقال إلى صفحة إضافة سؤال
+                                    className="bg-blue-500 hover:bg-blue-600 mt-4 px-4 py-2 rounded text-white"
                                 >
-                                    <ChevronRight size={18} />
-                                </button>
-                                <span>الصفحة {page} من {totalPages}</span>
-                                <button
-                                    disabled={page === totalPages}
-                                    onClick={() => {
-                                        setPage(page + 1);
-                                        updateURL({ page: page + 1, category, search });
-                                    }}
-                                    className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 disabled:opacity-25 shadow px-4 py-1 border dark:border-gray-700 rounded disabled:cursor-no-drop"
-                                >
-                                    <ChevronLeft size={18} />
+                                    + إضافة سؤال جديد
                                 </button>
                             </div>
 
-                            <button
-                                onClick={() => router.push("/admin/questions/add")} // الانتقال إلى صفحة إضافة سؤال
-                                className="bg-blue-500 hover:bg-blue-600 mt-4 px-4 py-2 rounded text-white"
-                            >
-                                 + إضافة سؤال جديد
-                            </button>
-                        </div>
-                        
-                    </>
-                )}
-            </div>
+                        </>
+                    )}
+                </div>
+            </Suspense>
         </MainLayout>
     );
 }

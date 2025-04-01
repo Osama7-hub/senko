@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, memo } from "react";
+import { useState, useEffect, useCallback, memo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import MainLayout from "@/app/layouts/MainLayout";
@@ -65,7 +65,9 @@ const QuizPage = () => {
     if (isLoading) {
         return (
             <MainLayout>
-                <SkeletonStartQuiz />
+                <Suspense fallback={<SkeletonStartQuiz />}>
+                    <SkeletonStartQuiz />
+                </Suspense>
             </MainLayout>
         )
     }
@@ -73,49 +75,53 @@ const QuizPage = () => {
     if (error) {
         return (
             <MainLayout>
-                <div className="flex flex-col items-center mx-auto px-4 max-w-5xl h-screen text-center">
-                    <p className="mt-16 text-red-500">{error}</p>
-                </div>
+                <Suspense fallback={<SkeletonStartQuiz />}>
+                    <div className="flex flex-col items-center mx-auto px-4 max-w-5xl h-screen text-center">
+                        <p className="mt-16 text-red-500">{error}</p>
+                    </div>
+                </Suspense>
             </MainLayout>
         );
     }
 
     return (
         <MainLayout>
-            <div className="flex flex-col items-center mx-auto px-4 max-w-5xl h-screen text-center">
-                <div className="bg-gray-300 dark:bg-gray-700 mt-4 rounded-full w-full h-2 overflow-hidden">
-                    <div
-                        className="bg-primary h-full transition-all duration-500"
-                        style={{ width: `${progress}%` }}
-                    ></div>
-                </div>
-
-                {quizFinished ? (
-                    <QuizResult score={score} totalQuestions={numberOfQuiz} />
-                ) : questions.length > 0 ? (
-                    <div className="mt-16 p-10 rounded-lg w-full">
-                        <h2 className="mb-4 font-bold text-gray-700 dark:text-gray-200 text-xl">
-                            {questions[currentIndex]?.text}
-                        </h2>
-                        {questions[currentIndex]?.type === "MULTIPLE_CHOICE" ? (
-                            <MultipleChoiceQuestion
-                                question={questions[currentIndex]}
-                                onAnswer={handleAnswer}
-                            />
-                        ) : (
-                            <MatchingQuestion
-                                question={questions[currentIndex]}
-                                onAnswer={handleAnswer}
-                            />
-                        )}
-                        <p className="mt-6 text-gray-500 text-sm">
-                            {currentIndex + 1} / {numberOfQuiz}
-                        </p>
+            <Suspense fallback={<SkeletonStartQuiz />}>
+                <div className="flex flex-col items-center mx-auto px-4 max-w-5xl h-screen text-center">
+                    <div className="bg-gray-300 dark:bg-gray-700 mt-4 rounded-full w-full h-2 overflow-hidden">
+                        <div
+                            className="bg-primary h-full transition-all duration-500"
+                            style={{ width: `${progress}%` }}
+                        ></div>
                     </div>
-                ) : (
-                    <p className="mt-16 text-gray-500"><FormattedMessage id="no.questionsForCategory" /></p>
-                )}
-            </div>
+
+                    {quizFinished ? (
+                        <QuizResult score={score} totalQuestions={numberOfQuiz} />
+                    ) : questions.length > 0 ? (
+                        <div className="mt-16 p-10 rounded-lg w-full">
+                            <h2 className="mb-4 font-bold text-gray-700 dark:text-gray-200 text-xl">
+                                {questions[currentIndex]?.text}
+                            </h2>
+                            {questions[currentIndex]?.type === "MULTIPLE_CHOICE" ? (
+                                <MultipleChoiceQuestion
+                                    question={questions[currentIndex]}
+                                    onAnswer={handleAnswer}
+                                />
+                            ) : (
+                                <MatchingQuestion
+                                    question={questions[currentIndex]}
+                                    onAnswer={handleAnswer}
+                                />
+                            )}
+                            <p className="mt-6 text-gray-500 text-sm">
+                                {currentIndex + 1} / {numberOfQuiz}
+                            </p>
+                        </div>
+                    ) : (
+                        <p className="mt-16 text-gray-500"><FormattedMessage id="no.questionsForCategory" /></p>
+                    )}
+                </div>
+            </Suspense>
         </MainLayout>
     );
 };

@@ -117,7 +117,7 @@ const SkeletonStartQuiz = memo(() => {
                         <div className="bg-gray-200 dark:bg-gray-800 rounded w-full h-10 animate-pulse"></div>
                     </div>
                 </div>
-                <div className="bg-gray-300 dark:bg-gray-700 m-auto mt-4 mt-8 rounded-full w-10 h-3 animate-pulse"></div>
+                <div className="bg-gray-300 dark:bg-gray-700 m-auto mt-8 rounded-full w-10 h-3 animate-pulse"></div>
             </div>
         </div>
     );

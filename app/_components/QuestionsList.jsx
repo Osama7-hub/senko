@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, memo } from "react";
+import { useState, useEffect, useCallback, memo, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import axios from "axios";
@@ -291,36 +291,38 @@ export default function QuestionsPage() {
         />
       }
     >
-      <div className="mx-auto p-6 max-w-7xl">
-        <CategoryTags
-          categories={categories}
-          onCategorySelect={handleCategorySelect}
-          selectedCategory={selectedCategory}
-        />
-        {
-          loading ? (<SkeletonQuestionItem limit={limit} />) : noResults ?
-            (
-              <p className="flex justify-center gap-2 mt-32 h-[85vh] text-gray-500 dark:text-gray-400 text-center">
-                لم يتم العثور على نتائج تطابق البحث <Frown size={20} className="text-primary" />
-              </p>
-            ) : (
-              <>
-                <ul className="space-y-1 h-[85vh]">
-                  {questions.map((question) => (
-                    <QuestionItem
-                      key={question.id}
-                      question={question}
-                      savedQuestions={savedQuestions}
-                      toggleSaveQuestion={toggleSaveQuestion}
-                      onCategorySelect={handleCategorySelect}
-                      session={session}
-                    />
-                  ))}
-                </ul>
-                <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
-              </>
-            )}
-      </div>
+      <Suspense fallback={<SkeletonQuestionItem limit={limit} />}>
+        <div className="mx-auto p-6 max-w-7xl">
+          <CategoryTags
+            categories={categories}
+            onCategorySelect={handleCategorySelect}
+            selectedCategory={selectedCategory}
+          />
+          {
+            loading ? (<SkeletonQuestionItem limit={limit} />) : noResults ?
+              (
+                <p className="flex justify-center gap-2 mt-32 h-[85vh] text-gray-500 dark:text-gray-400 text-center">
+                  لم يتم العثور على نتائج تطابق البحث <Frown size={20} className="text-primary" />
+                </p>
+              ) : (
+                <>
+                  <ul className="space-y-1 h-[85vh]">
+                    {questions.map((question) => (
+                      <QuestionItem
+                        key={question.id}
+                        question={question}
+                        savedQuestions={savedQuestions}
+                        toggleSaveQuestion={toggleSaveQuestion}
+                        onCategorySelect={handleCategorySelect}
+                        session={session}
+                      />
+                    ))}
+                  </ul>
+                  <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
+                </>
+              )}
+        </div>
+      </Suspense>
     </MainLayout>
   );
 }
