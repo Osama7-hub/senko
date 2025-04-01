@@ -7,8 +7,10 @@ export const dynamic = "force-dynamic"; // ⬅️ هذا السطر يمنع Nex
 
 export default function QuestionsPage() {
     return (
-        <MainLayout header={<span className="mb-4 font-bold text-2xl">إدارة الأسئلة</span>}>
-            <QuestionsClient />
-        </MainLayout>
+        <Suspense fallback={<div>Loading ...</div>}>
+            <MainLayout header={<span className="mb-4 font-bold text-2xl">إدارة الأسئلة</span>}>
+                <QuestionsClient />
+            </MainLayout>
+        </Suspense>
     );
 }
