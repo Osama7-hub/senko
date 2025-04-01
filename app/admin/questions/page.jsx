@@ -19,10 +19,21 @@ export default function QuestionsPage() {
     // 📌 قراءة القيم من الـ URL
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(parseInt(searchParams.get("page")) || 1);
+    // const [page, setPage] = useState(parseInt(searchParams.get("page")) || 1);
     const [totalPages, setTotalPages] = useState(1);
-    const [category, setCategory] = useState(searchParams.get("category") || "");
-    const [search, setSearch] = useState(searchParams.get("search") || "");
+    // const [category, setCategory] = useState(searchParams.get("category") || "");
+    // const [search, setSearch] = useState(searchParams.get("search") || "");
+
+    const [page, setPage] = useState(1);
+    const [category, setCategory] = useState("");
+    const [search, setSearch] = useState("");
+
+    useEffect(() => {
+        setPage(parseInt(searchParams.get("page")) || 1);
+        setCategory(searchParams.get("category") || "");
+        setSearch(searchParams.get("search") || "");
+    }, [searchParams]); // تحديث القيم عند تغير `searchParams`
+
 
     useEffect(() => {
         async function fetchQuestions() {
