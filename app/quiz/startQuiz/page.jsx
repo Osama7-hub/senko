@@ -65,11 +65,11 @@ const QuizPage = () => {
 
     if (isLoading) {
         return (
-            <MainLayout>
-                <Suspense fallback={<SkeletonStartQuiz />}>
+            <Suspense fallback={<SkeletonStartQuiz />}>
+                <MainLayout>
                     <SkeletonStartQuiz />
-                </Suspense>
-            </MainLayout>
+                </MainLayout>
+            </Suspense>
         )
     }
 
