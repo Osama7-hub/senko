@@ -8,6 +8,8 @@ import { useIntl } from "react-intl";
 import { FormattedMessage } from 'react-intl';
 import Breadcrumb from "@/app/_components/Breadcrumb";
 
+export const dynamic = "force-dynamic"; // ⬅️ هذا السطر يمنع Next.js من معالجة الصفحة أثناء الـ build
+
 export default function QuestionsClient() {
     const router = useRouter();
     const searchParams = useSearchParams();
