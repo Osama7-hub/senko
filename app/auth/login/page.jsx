@@ -21,15 +21,25 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // useEffect(() => {
+  //   // ✅ لف useSearchParams داخل useEffect
+  //   const searchParams = new URLSearchParams(window.location.search);
+  //   const errorParam = searchParams.get("error");
+  //   console.error("Error Param:", errorParam);  // ✅ تحقق من قيم الخطأ
+  //   if (errorParam) {
+  //     setError(decodeURIComponent(errorParam));
+  //   }
+  // }, []); // ✅ يتم تنفيذ هذا الكود مرة واحدة فقط عند التحميل
   useEffect(() => {
-    // ✅ لف useSearchParams داخل useEffect
     const searchParams = new URLSearchParams(window.location.search);
     const errorParam = searchParams.get("error");
-    console.error("Error Param:", errorParam);  // ✅ تحقق من قيم الخطأ
+  
+    console.log("Error Param:", errorParam); // تحقق مما إذا كانت القيمة تظهر بشكل صحيح في الـ console
+  
     if (errorParam) {
       setError(decodeURIComponent(errorParam));
     }
-  }, []); // ✅ يتم تنفيذ هذا الكود مرة واحدة فقط عند التحميل
+  }, []);
 
   useEffect(() => {
     if (status === "authenticated") {
