@@ -9,7 +9,6 @@ import { FormattedMessage } from "react-intl";
 import { useIntl } from "react-intl";
 import Link from "next/link";
 import AuthLayout from "@/app/layouts/AuthLayout";
-import ClientLoginSeaecgPrams from "./ClientLoginSeaecgPrams";
 
 export default function LoginPage() {
   const intl = useIntl(); // استخراج كائن الترجمة
@@ -22,13 +21,12 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   // استخراج الخطأ من الـ URL بعد تحميل الصفحة
-  //   useEffect(() => {
-  //     const errorParam = searchParams.get("error");
-  //     if (errorParam) {
-  //         setError(decodeURIComponent(errorParam));
-  //     }
-  // }, [searchParams]); // تحديث الخطأ عند تغيير الـ searchParams
-
+    useEffect(() => {
+      const errorParam = searchParams.get("error");
+      if (errorParam) {
+          setError(decodeURIComponent(errorParam));
+      }
+  }, [searchParams]); // تحديث الخطأ عند تغيير الـ searchParams
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -60,7 +58,6 @@ export default function LoginPage() {
   return (
     <AuthLayout titleId="title.login">
       <Suspense fallback={<div>Loading ...</div>}>
-        <ClientLoginSeaecgPrams setError={setError} />
         {error && <p className="mb-2 text-red-500 text-sm text-center">{error}</p>}
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="relative">
