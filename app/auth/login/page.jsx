@@ -13,7 +13,7 @@ import AuthLayout from "@/app/layouts/AuthLayout";
 export default function LoginPage() {
   const intl = useIntl(); // استخراج كائن الترجمة
   const searchParams = useSearchParams();
-  const errorParam = searchParams.get("error"); // قراءة رسالة الخطأ من الـ URL
+  // const errorParam = searchParams.get("error"); // قراءة رسالة الخطأ من الـ URL
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -21,6 +21,14 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // استخراج الخطأ من الـ URL بعد تحميل الصفحة
+  useEffect(() => {
+    const errorParam = searchParams.get("error");
+    if (errorParam) {
+        setError(decodeURIComponent(errorParam));
+    }
+}, [searchParams]); // تحديث الخطأ عند تغيير الـ searchParams
 
 
   useEffect(() => {
