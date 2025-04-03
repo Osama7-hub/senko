@@ -27,6 +27,8 @@ export default function LoginPage() {
     const errorParam = searchParams.get("error");
     if (errorParam) {
       setError(decodeURIComponent(errorParam));
+      console.log("Error Param:", errorParam);  // ✅ تحقق من قيم الخطأ
+
     }
   }, []); // ✅ يتم تنفيذ هذا الكود مرة واحدة فقط عند التحميل
 
