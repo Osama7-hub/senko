@@ -14,7 +14,6 @@ export const dynamic = "force-dynamic"; // ⬅️ هذا السطر يمنع Nex
 
 export default function LoginPage() {
   const intl = useIntl(); // استخراج كائن الترجمة
-  const searchParams = useSearchParams();
   const { data: session, status } = useSession();
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -22,13 +21,14 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // استخراج الخطأ من الـ URL بعد تحميل الصفحة
-    useEffect(() => {
-      const errorParam = searchParams.get("error");
-      if (errorParam) {
-          setError(decodeURIComponent(errorParam));
-      }
-  }, [searchParams]); // تحديث الخطأ عند تغيير الـ searchParams
+  useEffect(() => {
+    // ✅ لف useSearchParams داخل useEffect
+    const searchParams = new URLSearchParams(window.location.search);
+    const errorParam = searchParams.get("error");
+    if (errorParam) {
+      setError(decodeURIComponent(errorParam));
+    }
+  }, []); // ✅ يتم تنفيذ هذا الكود مرة واحدة فقط عند التحميل
 
   useEffect(() => {
     if (status === "authenticated") {
