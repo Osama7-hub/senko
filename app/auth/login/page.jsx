@@ -2,18 +2,17 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Github, Loader, Mail, RectangleEllipsis } from "lucide-react";
 import { FormattedMessage } from "react-intl";
 import { useIntl } from "react-intl";
 import Link from "next/link";
 import AuthLayout from "@/app/layouts/AuthLayout";
+import ClientLoginSeaecgPrams from "./ClientLoginSeaecgPrams";
 
 export default function LoginPage() {
   const intl = useIntl(); // استخراج كائن الترجمة
-  const searchParams = useSearchParams();
-  // const errorParam = searchParams.get("error"); // قراءة رسالة الخطأ من الـ URL
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -23,12 +22,12 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   // استخراج الخطأ من الـ URL بعد تحميل الصفحة
-  useEffect(() => {
-    const errorParam = searchParams.get("error");
-    if (errorParam) {
-        setError(decodeURIComponent(errorParam));
-    }
-}, [searchParams]); // تحديث الخطأ عند تغيير الـ searchParams
+//   useEffect(() => {
+//     const errorParam = searchParams.get("error");
+//     if (errorParam) {
+//         setError(decodeURIComponent(errorParam));
+//     }
+// }, [searchParams]); // تحديث الخطأ عند تغيير الـ searchParams
 
 
   useEffect(() => {
@@ -60,7 +59,8 @@ export default function LoginPage() {
 
   return (
     <AuthLayout titleId="title.login">
-      <Suspense fallback={<SkeletonStartQuiz />}>
+      <ClientLoginSeaecgPrams setError={setError} />
+      <Suspense fallback={<div>Loading ...</div>}>
         {error && <p className="mb-2 text-red-500 text-sm text-center">{error}</p>}
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="relative">
