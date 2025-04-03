@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Github, Loader, Mail, RectangleEllipsis } from "lucide-react";
 import { FormattedMessage } from "react-intl";
@@ -12,6 +12,8 @@ import AuthLayout from "@/app/layouts/AuthLayout";
 
 export default function LoginPage() {
   const intl = useIntl(); // استخراج كائن الترجمة
+  const searchParams = useSearchParams();
+  const errorParam = searchParams.get("error"); // قراءة رسالة الخطأ من الـ URL
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -50,8 +52,8 @@ export default function LoginPage() {
 
   return (
     <AuthLayout titleId="title.login">
-      <>
-      {error && <p className="mb-2 text-red-500 text-sm text-center">{error}</p>}
+      <Suspense fallback={<SkeletonStartQuiz />}>
+        {error && <p className="mb-2 text-red-500 text-sm text-center">{error}</p>}
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="relative">
             <label htmlFor="UserEmail" className="sr-only"> <FormattedMessage id="input.email" /> </label>
@@ -131,7 +133,7 @@ export default function LoginPage() {
             <FormattedMessage id="signup.now" />
           </Link>
         </p>
-      </>
+      </Suspense>
     </AuthLayout>
   );
 }
