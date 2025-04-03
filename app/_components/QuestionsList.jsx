@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { SkeletonQuestionItem } from "./Skeletons";
+import QuestionsMetadata from "./QuestionsMetadata";
 
 
 // مكون منفصل لعرض الفئات
@@ -172,6 +173,10 @@ export default function QuestionsPage() {
   const [order, setOrder] = useState(initialOrderBy);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    document.title = "صفحة الأسئلة - سينكو";
+  }, []);
+
   // جلب الأسئلة والأسئلة المحفوظة
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -294,6 +299,7 @@ export default function QuestionsPage() {
     >
       <Suspense fallback={<SkeletonQuestionItem limit={limit} />}>
         <div className="mx-auto p-6 max-w-7xl">
+        <QuestionsMetadata />
           <CategoryTags
             categories={categories}
             onCategorySelect={handleCategorySelect}

@@ -1,4 +1,3 @@
-// import { Geist, Geist_Mono } from "next/font/google";
 import { LocaleProvider } from "./context/LocaleContext";
 import { ThemeColorProvider } from "./context/ThemeColorContext";
 import { ThemeProvider } from "./context/themeContext";
