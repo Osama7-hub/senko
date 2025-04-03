@@ -25,10 +25,9 @@ export default function LoginPage() {
     // ✅ لف useSearchParams داخل useEffect
     const searchParams = new URLSearchParams(window.location.search);
     const errorParam = searchParams.get("error");
+    console.error("Error Param:", errorParam);  // ✅ تحقق من قيم الخطأ
     if (errorParam) {
       setError(decodeURIComponent(errorParam));
-      console.log("Error Param:", errorParam);  // ✅ تحقق من قيم الخطأ
-
     }
   }, []); // ✅ يتم تنفيذ هذا الكود مرة واحدة فقط عند التحميل
 
@@ -61,7 +60,6 @@ export default function LoginPage() {
 
   return (
     <AuthLayout titleId="title.login">
-      <Suspense fallback={<div>Loading ...</div>}>
         {error && <p className="mb-2 text-red-500 text-sm text-center">{error}</p>}
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="relative">
@@ -142,7 +140,6 @@ export default function LoginPage() {
             <FormattedMessage id="signup.now" />
           </Link>
         </p>
-      </Suspense>
     </AuthLayout>
   );
 }
