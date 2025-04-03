@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Github, Loader, Mail, RectangleEllipsis } from "lucide-react";
 import { FormattedMessage } from "react-intl";
@@ -12,7 +12,7 @@ import AuthLayout from "@/app/layouts/AuthLayout";
 
 export default function LoginPage() {
   const intl = useIntl(); // استخراج كائن الترجمة
-
+  const searchParams = useSearchParams();
   const { data: session, status } = useSession();
   const router = useRouter();
   const [email, setEmail] = useState("");
