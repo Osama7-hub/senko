@@ -18,7 +18,6 @@ import { FormattedMessage } from "react-intl";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/navigation";
 import {Alert} from "@/app/_components/Alert";
-import QuestionDetailsMetadata from "./questionDetailsMetadata";
 
 const CategoryTags = memo(({ categories }) => (
   <div className="flex justify-end text-gray-500 text-sm">
@@ -345,7 +344,6 @@ export default function QuestionDetails() {
         />
       }
     >
-      <QuestionDetailsMetadata />
       {alertData && (
         <Alert
           title={alertData.title}
