@@ -22,12 +22,12 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   // استخراج الخطأ من الـ URL بعد تحميل الصفحة
-//   useEffect(() => {
-//     const errorParam = searchParams.get("error");
-//     if (errorParam) {
-//         setError(decodeURIComponent(errorParam));
-//     }
-// }, [searchParams]); // تحديث الخطأ عند تغيير الـ searchParams
+  //   useEffect(() => {
+  //     const errorParam = searchParams.get("error");
+  //     if (errorParam) {
+  //         setError(decodeURIComponent(errorParam));
+  //     }
+  // }, [searchParams]); // تحديث الخطأ عند تغيير الـ searchParams
 
 
   useEffect(() => {
@@ -59,8 +59,8 @@ export default function LoginPage() {
 
   return (
     <AuthLayout titleId="title.login">
-      <ClientLoginSeaecgPrams setError={setError} />
       <Suspense fallback={<div>Loading ...</div>}>
+        <ClientLoginSeaecgPrams setError={setError} />
         {error && <p className="mb-2 text-red-500 text-sm text-center">{error}</p>}
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="relative">
