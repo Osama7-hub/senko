@@ -21,7 +21,7 @@ async function connectToDatabase() {
 connectToDatabase();
 
 export const authOptions = {
-    // debug: true, // عرض الأخطاء في الكونسول
+    debug: true, // عرض الأخطاء في الكونسول
     adapter: PrismaAdapter(prisma),
     providers: [
         GoogleProvider({ // ✅ إضافة Google OAuth
@@ -60,7 +60,6 @@ export const authOptions = {
                 return user;
             },
         }),
-
     ],
     session: {
         strategy: "jwt",
