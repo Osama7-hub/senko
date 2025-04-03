@@ -10,6 +10,8 @@ import { useIntl } from "react-intl";
 import Link from "next/link";
 import AuthLayout from "@/app/layouts/AuthLayout";
 
+export const dynamic = "force-dynamic"; // ⬅️ هذا السطر يمنع Next.js من معالجة الصفحة أثناء الـ build
+
 export default function LoginPage() {
   const intl = useIntl(); // استخراج كائن الترجمة
   const searchParams = useSearchParams();
