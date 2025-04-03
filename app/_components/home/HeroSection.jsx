@@ -12,10 +12,10 @@ export default function HeroSection() {
         <FormattedMessage id="hero.descContent" />
       </p>
       <div className="flex gap-4 mt-6">
-        <Link href="/quiz" className="bg-primary hover:bg-secondary shadow-md px-6 py-3 rounded-lg font-semibold text-white transition">
+        <Link href="/" className="bg-primary hover:bg-secondary shadow-md px-6 py-3 rounded-lg font-semibold text-white transition">
           <FormattedMessage id="hero.btn.tryQuestions" />
         </Link>
-        <Link href="/" className="hover:bg-primary px-6 py-3 border border-primary rounded-lg font-semibold text-primary hover:text-white transition">
+        <Link href="/quiz" className="hover:bg-primary px-6 py-3 border border-primary rounded-lg font-semibold text-primary hover:text-white transition">
           <FormattedMessage id="hero.btn.tryQuizzes" />
         </Link>
       </div>
