@@ -50,8 +50,10 @@ export default function LoginPage() {
     });
 
     if (res?.error) {
+      const errorMessage = "هذا البريد الإلكتروني مسجل بالفعل باستخدام Google. يرجى تسجيل الدخول باستخدام Google.";
       setError("خطأ في تسجيل الدخول، تأكد من البريد الإلكتروني وكلمة المرور");
       setLoading(false)
+      router.push(`/auth/login?error=${encodeURIComponent(errorMessage)}`);
     } else {
       setLoading(false)
       router.push("/"); // بعد تسجيل الدخول، انتقل الصفحة الرئيسية
