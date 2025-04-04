@@ -174,7 +174,7 @@ export default function QuestionsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    document.title = "صفحة الأسئلة - سينكو";
+    document.title = "صفحة الأسئلة | سينكو";
   }, []);
 
   // جلب الأسئلة والأسئلة المحفوظة

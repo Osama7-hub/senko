@@ -21,15 +21,6 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   // ✅ لف useSearchParams داخل useEffect
-  //   const searchParams = new URLSearchParams(window.location.search);
-  //   const errorParam = searchParams.get("error");
-  //   console.error("Error Param:", errorParam);  // ✅ تحقق من قيم الخطأ
-  //   if (errorParam) {
-  //     setError(decodeURIComponent(errorParam));
-  //   }
-  // }, []); // ✅ يتم تنفيذ هذا الكود مرة واحدة فقط عند التحميل
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const errorParam = searchParams.get("error");

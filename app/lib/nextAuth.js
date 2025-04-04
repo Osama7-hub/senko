@@ -61,6 +61,10 @@ export const authOptions = {
             },
         }),
     ],
+    pages: {
+        signIn: "/auth/login", // ← ← هنا نوجه صفحة تسجيل الدخول
+        error: "/auth/login",  // ← ← وهنا أيضًا نوجه الأخطاء إلى نفس الصفحة
+    },
     session: {
         strategy: "jwt",
         maxAge: 1 * 24 * 60 * 60 // 1 Day
