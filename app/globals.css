@@ -6,9 +6,6 @@
 /* @random; يجب أن يتم تجاهل التحذير لهذه القاعدة الآن */
 /* csslint-ignore:end */
 
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500&family=Tajawal:wght@400;500&display=swap');
-
-
 :root {
   --color-primary: #17b8a6 !important;
   --color-secondary: #027e71 !important;
@@ -47,7 +44,7 @@ html[dir="ltr"] body {
 } */
 
 html body {
-  font-family: "Quicksand", "Tajawal", sans-serif;
+  /* font-family: "Quicksand", "Tajawal", sans-serif; */
   /* font-family: var(--font-quicksand), var(--font-tajawal); */
   /* font-family: "Cairo", sans-serif; */
   direction  : rtl;

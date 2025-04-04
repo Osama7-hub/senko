@@ -351,7 +351,7 @@ export default function QuestionDetails() {
         />
       )}
       <div className="md:flex flex-row justify-between items-center px-6 py-8">
-        <p className="text-gray-700 dark:text-gray-300" style={{ fontLoading: "eager" }}>
+        <p className="mb-4 sm:mb-0 text-gray-700 dark:text-gray-300" style={{ fontLoading: "eager" }}>
           {question.content}
         </p>
         <CategoryTags categories={question.category} />

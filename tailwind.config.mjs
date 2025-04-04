@@ -13,14 +13,14 @@ export default {
         secondary: "var(--color-secondary)",
         greenLight: "var(--color-light)",
       },
-      fontFamily: {
-        sans: ['Quicksand', 'Tajawal' ,'sans-serif'],
-      },
       // fontFamily: {
-      //   quicksand: ['var(--font-quicksand)', 'sans-serif'],
-      //   tajawal: ['var(--font-tajawal)', 'sans-serif'],
-      //   mixed: ['var(--font-quicksand)', 'var(--font-tajawal)', 'sans-serif'], // default fallback
+      //   sans: ['Quicksand', 'Tajawal' ,'sans-serif'],
       // },
+      fontFamily: {
+        quicksand: ['var(--font-quicksand)', 'sans-serif'],
+        tajawal: ['var(--font-tajawal)', 'sans-serif'],
+        mixed: ['var(--font-tajawal)', 'var(--font-quicksand)', 'sans-serif'], // default fallback
+      },
     },
   },
   darkMode: "class", // استخدم "class" للتحكم في الوضع الداكن

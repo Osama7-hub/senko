@@ -38,15 +38,17 @@ const SkeletonQuestionDetails = memo(() => {
             {/* عنوان السؤال */}
             <div className="bg-gray-200 dark:bg-gray-800 mb-4 rounded w-3/4 h-6"></div>
             {/* <div className="flex justify-between items-center gap-2"> */}
-            {/* نص السؤال */}
-            {/* <div className="flex flex-col gap-2"> */}
-            <div className="bg-gray-200 dark:bg-gray-800 mb-2 rounded w-full h-5"></div>
-            <div className="bg-gray-200 dark:bg-gray-800 mb-2 rounded w-5/6 h-5"></div>
-            {/* </div> */}
-            {/* التصنيفات */}
-            <div className="flex justify-end gap-2">
-                <div className="bg-gray-200 dark:bg-gray-800 rounded-lg w-24 h-6"></div>
-                <div className="bg-gray-200 dark:bg-gray-800 rounded-lg w-24 h-6"></div>
+            <div className="gap-4 lg:gap-8 grid grid-cols-1 lg:grid-cols-[1fr_120px]">
+                <div>
+                    {/* نص السؤال */}
+                    <div className="bg-gray-200 dark:bg-gray-800 mb-2 rounded h-5"></div>
+                    <div className="bg-gray-200 dark:bg-gray-800 rounded h-5"></div>
+                </div>
+                {/* التصنيفات */}
+                <div className="flex gap-2">
+                    <div className="bg-gray-200 dark:bg-gray-800 rounded w-20 h-6"></div>
+                    <div className="bg-gray-200 dark:bg-gray-800 rounded w-20 h-6"></div>
+                </div>
             </div>
         </div>
         // </div>
