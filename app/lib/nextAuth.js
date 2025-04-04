@@ -91,19 +91,22 @@ export const authOptions = {
             return session;
         },
         async signIn({ user, account }) {
-            if (account?.provider === "github") {
-                const existingUser = await prisma.user.findUnique({
-                    where: { email: user.email },
-                });
+            try {
+                if (account?.provider === "github") {
+                    const existingUser = await prisma.user.findUnique({
+                        where: { email: user.email },
+                    });
 
-                if (existingUser && existingUser.provider !== "github") {
-                    throw new Error(
-                        "هذا البريد الإلكتروني مسجل بالفعل باستخدام Google. يرجى تسجيل الدخول باستخدام Google."
-                    );
+                    if (existingUser && existingUser.provider !== "github") {
+                        return "/auth/login?error=" + encodeURIComponent("هذا البريد الإلكتروني مسجل بالفعل باستخدام Google. يرجى تسجيل الدخول باستخدام Google.");
+                    }
                 }
+                return true;
+            } catch (error) {
+                console.error("خطاء في تسجيل الدخول:", error);
+                throw error;
             }
-            return true;
-        },
+        }
     },
     secret: process.env.NEXTAUTH_SECRET,
 };
