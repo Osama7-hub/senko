@@ -13,6 +13,29 @@ const Header = memo(() => {
   const { data: session } = useSession();
   const pathname = usePathname();
 
+  const [showMobileNavbar, setShowMobileNavbar] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        // Scroll Down
+        setShowMobileNavbar(false);
+      } else {
+        // Scroll Up
+        setShowMobileNavbar(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <header className="z-20 bg-gray-50 dark:bg-gray-800 shadow-md w-full">
       <div className="flex justify-between items-center mx-auto px-5 min-h-14 container">
@@ -38,14 +61,14 @@ const Header = memo(() => {
             className={`py-4 px-6 ${pathname.startsWith("/quiz") ? "text-primary bg-gray-100 border-t-4 border-x dark:border-x-gray-700 border-t-primary dark:bg-gray-700 font-semibold" : "hover:bg-gray-100 hover:dark:bg-gray-900"}`}>
             <li> <FormattedMessage id="header.menu.quiz" /> </li>
           </Link>
-          
+
           <Link href="/summaries"
             className={`py-4 px-6 ${pathname.startsWith("/summaries") ? "text-primary bg-gray-100 border-t-4 border-x dark:border-x-gray-700 border-t-primary dark:bg-gray-700 font-semibold" : "hover:bg-gray-100 hover:dark:bg-gray-900"}`}>
             <li> <FormattedMessage id="header.menu.summaries" /> </li>
           </Link>
         </ul>
 
-        <ul className="md:hidden right-0 bottom-0 z-30 md:static fixed flex justify-center items-center bg-gray-50 dark:bg-gray-800 w-full text-sm">
+        <ul className={`md:hidden fixed border-t border-gray-200 dark:border-gray-700 bottom-0 right-0 z-30 w-full text-sm flex justify-center items-center bg-gray-50 dark:bg-gray-800 transition-transform duration-300 ${showMobileNavbar ? "translate-y-0" : "translate-y-full"}`}>
           <li className={`p-3 ${pathname === "/home" ? "text-primary bg-gray-100 border-b-4 border-x dark:border-x-gray-700 border-b-primary dark:bg-gray-700 font-semibold" : "hover:bg-gray-100 hover:dark:bg-gray-900"}`}>
             <Link href="/home"><FormattedMessage id="header.menu.main" /></Link>
           </li>
@@ -190,7 +213,7 @@ const AdminMenu = memo(({ userSession }) => {
             <Link href="/" className="block hover:bg-gray-100 dark:hover:bg-gray-900 px-4 py-2">
               <FormattedMessage id="header.browser" />
             </Link>
-          )} 
+          )}
           <button
             onClick={() => signOut()}
             className="flex justify-start hover:bg-gray-100 dark:hover:bg-gray-900 px-4 py-2 w-full"

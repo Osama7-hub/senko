@@ -14,7 +14,7 @@ export default {
         greenLight: "var(--color-light)",
       },
       fontFamily: {
-        sans: ['Tajawal', 'sans-serif'],
+        sans: ['Quicksand', 'Tajawal' ,'sans-serif'],
       },
     },
   },

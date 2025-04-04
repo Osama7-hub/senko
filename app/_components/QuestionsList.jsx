@@ -46,7 +46,7 @@ const QuestionItem = memo(({ question, savedQuestions, toggleSaveQuestion, onCat
   <li className="hover:bg-gray-50 dark:hover:bg-gray-800 p-4 border-gray-100 dark:border-gray-800 border-b transition">
     <div className="flex justify-between items-center">
       <Link href={`/question/${question.id}`}>
-        <h2 className="font-semibold text-secondary hover:text-primary dark:text-primary text-lg cursor-pointer">
+        <h2 className="font-semibold text-secondary hover:text-primary dark:text-primary text-sm sm:text-lg cursor-pointer">
           {question.title}
         </h2>
       </Link>
@@ -69,7 +69,7 @@ const QuestionItem = memo(({ question, savedQuestions, toggleSaveQuestion, onCat
         <button
           key={index}
           onClick={() => onCategorySelect(cat, false)}
-          className="flex items-center gap-1 bg-greenLight hover:bg-primary dark:bg-gray-950 dark:hover:bg-primary shadow mx-1 px-3 py-1 border dark:border-gray-700 rounded-full hover:text-white dark:text-gray-50 text-sm capitalize"
+          className="flex items-center gap-1 bg-greenLight hover:bg-primary dark:bg-gray-950 dark:hover:bg-primary shadow mx-1 px-3 py-1 border dark:border-gray-700 rounded-full hover:text-white dark:text-gray-50 text-xs sm:text-sm capitalize"
         >
           <Tags size={15} /> <span>{cat}</span>
         </button>
