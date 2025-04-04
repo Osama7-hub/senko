@@ -6,6 +6,9 @@
 /* @random; يجب أن يتم تجاهل التحذير لهذه القاعدة الآن */
 /* csslint-ignore:end */
 
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500&family=Tajawal:wght@400;500&display=swap');
+
+
 :root {
   --color-primary: #17b8a6 !important;
   --color-secondary: #027e71 !important;
@@ -45,6 +48,7 @@ html[dir="ltr"] body {
 
 html body {
   font-family: "Quicksand", "Tajawal", sans-serif;
+  /* font-family: var(--font-quicksand), var(--font-tajawal); */
   /* font-family: "Cairo", sans-serif; */
   direction  : rtl;
   /* @apply flex justify-center items-center bg-gradient-to-r from-primary to-secondary h-screen; */
@@ -115,3 +119,11 @@ html body {
   100% { transform: scale(1); }
 }
 /* ====================== */
+
+/* :lang(ar) {
+  font-family: var(--font-tajawal), var(--font-quicksand), sans-serif;
+}
+
+:lang(en) {
+  font-family: var(--font-quicksand), sans-serif;
+} */
