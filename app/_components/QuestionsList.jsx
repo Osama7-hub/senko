@@ -26,11 +26,12 @@ const CategoryTags = memo(({ categories, onCategorySelect, selectedCategory }) =
   <div className="mb-8 max-w-full overflow-x-auto snap-start">
     <div className="flex flex-nowrap gap-2 mb-2 w-max">
       {categories.map((category) => {
-        const isCategorySelected = selectedCategory === category.name;
+        // const isCategorySelected = selectedCategory === category.name;
+        const isCategorySelected = selectedCategory === category;
         return (
           <button
             key={category.name}
-            onClick={() => onCategorySelect(category.name, isCategorySelected)}
+            onClick={() => onCategorySelect(category, isCategorySelected)}
             className={`flex items-center gap-1 px-3 py-1 text-sm hover:bg-primary dark:hover:bg-primary hover:text-white shadow capitalize ${isCategorySelected ? "bg-primary text-white" : "bg-gray-100 dark:bg-gray-800"
               }`}
           >
