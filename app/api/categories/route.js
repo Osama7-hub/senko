@@ -13,10 +13,10 @@ export async function GET() {
         // });
 
         // جلب جميع الأسئلة
-        /* const questions = await prisma.question.findMany({
+        const questions = await prisma.question.findMany({
             select: { category: true },
         });
-
+/*
         const categoryMap = new Map();
 
         questions.forEach((q) => {
