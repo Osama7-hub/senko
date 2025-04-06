@@ -21,23 +21,26 @@ import Link from "next/link";
 import { SkeletonQuestionItem } from "./Skeletons";
 import QuestionsMetadata from "./QuestionsMetadata";
 
-
 // مكون منفصل لعرض الفئات
 const CategoryTags = memo(({ categories, onCategorySelect, selectedCategory }) => (
-  <div className="flex flex-wrap gap-2 mb-4">
-    {categories.map((category) => {
-      const isCategorySelected = selectedCategory === category;
-      return (
-        <button
-          key={category}
-          onClick={() => onCategorySelect(category, isCategorySelected)}
-          className={`flex items-center gap-1 px-3 py-1 text-sm hover:bg-primary dark:hover:bg-primary hover:text-white shadow capitalize ${isCategorySelected ? "bg-primary text-white" : "bg-gray-100 dark:bg-gray-800"
-            }`}
-        >
-          <Tags size={15} /> {category}
-        </button>
-      );
-    })}
+  // <div className="flex flex-wrap gap-2 mb-6">
+  <div className="mb-8 max-w-full overflow-x-auto snap-start">
+    <div className="flex flex-nowrap gap-2 mb-2 w-max">
+      {categories.map((category) => {
+        const isCategorySelected = selectedCategory === category.name;
+        return (
+          <button
+            key={category.name}
+            onClick={() => onCategorySelect(category.name, isCategorySelected)}
+            className={`flex items-center gap-1 px-3 py-1 text-sm hover:bg-primary dark:hover:bg-primary hover:text-white shadow capitalize ${isCategorySelected ? "bg-primary text-white" : "bg-gray-100 dark:bg-gray-800"
+              }`}
+          >
+            {/* <Tags size={15} /> {category} */}
+            <Tags size={15} /> {category.name} <span className="shadow">({category.count})</span>
+          </button>
+        );
+      })}
+    </div>
   </div>
 ));
 
@@ -255,7 +258,7 @@ export default function QuestionsPage() {
       setQuestions(questions || []);
       setTotalPages(totalPages || 1);
       setNoResults(questions.length === 0);
-      extractCategories(questions || []);
+      // extractCategories(questions || []);
 
       if (session) {
         setSavedQuestions(new Set(savedRes.data.map((q) => q.questionId)));
@@ -269,6 +272,20 @@ export default function QuestionsPage() {
       setLoading(false);
     }
   }, [page, selectedCategory, searchQuery, order, session, limit]);
+
+  // جلب الفئات من API
+  const fetchCategories = useCallback(async () => {
+    try {
+      const res = await axios.get("/api/categories");
+      setCategories(res.data || []);
+    } catch (error) {
+      console.error("خطاء في جلب الفئات:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   useEffect(() => {
     fetchData();
