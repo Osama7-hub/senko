@@ -3,11 +3,10 @@ import { memo } from "react";
 const SkeletonQuestionItem = memo(({ limit }) => {
     return (
         <>
-            {/* فئات السؤال الوهمية في الصفحة*/}
-            <div className="flex gap-2 mt-2">
-                <div className="bg-gray-200 dark:bg-gray-700 w-20 h-6"></div>
-                <div className="bg-gray-200 dark:bg-gray-700 w-20 h-6"></div>
-                <div className="bg-gray-200 dark:bg-gray-700 w-20 h-6"></div>
+            <div className="flex gap-2 mt-2 mb-6">
+                {Array.from({ length: limit }).map((_, index) => (
+                    <div key={index} className="bg-gray-200 dark:bg-gray-700 w-20 h-6"></div>
+                ))}
             </div>
             <ul className="space-y-1 h-[85vh]">
                 {Array.from({ length: limit }).map((_, index) => (

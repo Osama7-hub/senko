@@ -23,7 +23,6 @@ import QuestionsMetadata from "./QuestionsMetadata";
 
 // مكون منفصل لعرض الفئات
 const CategoryTags = memo(({ categories, onCategorySelect, selectedCategory }) => (
-  // <div className="flex flex-wrap gap-2 mb-6">
   <div className="mb-8 max-w-full overflow-x-auto snap-start">
     <div className="flex flex-nowrap gap-2 mb-2 w-max">
       {categories.map((category) => {
@@ -36,7 +35,7 @@ const CategoryTags = memo(({ categories, onCategorySelect, selectedCategory }) =
               }`}
           >
             {/* <Tags size={15} /> {category} */}
-            <Tags size={15} /> {category.name} <span className="shadow">({category.count})</span>
+            {category.name} <span className="bg-greenLight dark:bg-gray-700 shadow rounded w-5 h-5 font-semibold text-primary text-sm leading-5">{category.count}</span>
           </button>
         );
       })}
@@ -49,7 +48,7 @@ const QuestionItem = memo(({ question, savedQuestions, toggleSaveQuestion, onCat
   <li className="hover:bg-gray-50 dark:hover:bg-gray-800 p-4 border-gray-100 dark:border-gray-800 border-b transition">
     <div className="flex justify-between items-center">
       <Link href={`/question/${question.id}`}>
-        <h2 className="font-semibold text-secondary hover:text-primary dark:hover:text-primary dark:text-gray-400 text-sm sm:text-lg cursor-pointer">
+        <h2 className="font-semibold text-secondary hover:text-primary dark:hover:text-primary dark:text-gray-300 text-sm sm:text-lg cursor-pointer">
           {question.title}
         </h2>
       </Link>
