@@ -162,7 +162,7 @@ const Pagination = memo(({ page, totalPages, onPageChange }) => {
           disabled={page === 1}
           className="inline-flex justify-center items-center bg-white hover:bg-greenLight dark:bg-gray-800 dark:hover:bg-primary disabled:opacity-50 border dark:border-gray-700 rounded-sm size-8 dark:text-gray-50"
         >
-          <ChevronLeft size={18} />
+          <ChevronRight size={18} />
         </button>
       </li>
 
@@ -174,7 +174,7 @@ const Pagination = memo(({ page, totalPages, onPageChange }) => {
           disabled={page === totalPages}
           className="inline-flex justify-center items-center bg-white hover:bg-greenLight dark:bg-gray-800 dark:hover:bg-primary disabled:opacity-50 border dark:border-gray-700 rounded-sm size-8 dark:text-gray-50"
         >
-          <ChevronRight size={18} />
+          <ChevronLeft size={18} />
         </button>
       </li>
     </ol>
