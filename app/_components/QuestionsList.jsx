@@ -226,7 +226,7 @@ export default function QuestionsPage() {
   const selectedCategory = searchParams.get("category") || null;
   const initialSearch = searchParams.get("search") || "";
   const initialOrderBy = searchParams.get("order") || "desc";
-  const limit = 8;
+  const limit = 7;
 
   const [questions, setQuestions] = useState([]);
   const [savedQuestions, setSavedQuestions] = useState(new Set());
