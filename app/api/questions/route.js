@@ -9,7 +9,7 @@ export async function GET(req) {
   const searchQuery = searchParams.get("search"); //  استخراج نص البحث
   const order = searchParams.get("order") || "desc"; // إضافة الترتيب مع افتراضي "desc"
   const page = parseInt(searchParams.get("page")) || 1;
-  const pageSize = parseInt(searchParams.get("limit")) || 3;
+  const pageSize = parseInt(searchParams.get("limit")) || 8;
   const skip = (page - 1) * pageSize;
 
   try {

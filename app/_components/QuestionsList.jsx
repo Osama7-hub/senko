@@ -46,7 +46,7 @@ const QuestionItem = memo(({ question, savedQuestions, toggleSaveQuestion, onCat
   <li className="hover:bg-gray-50 dark:hover:bg-gray-800 p-4 border-gray-100 dark:border-gray-800 border-b transition">
     <div className="flex justify-between items-center">
       <Link href={`/question/${question.id}`}>
-        <h2 className="font-semibold text-secondary hover:text-primary dark:text-primary text-sm sm:text-lg cursor-pointer">
+        <h2 className="font-semibold text-secondary hover:text-primary dark:hover:text-primary dark:text-gray-400 text-sm sm:text-lg cursor-pointer">
           {question.title}
         </h2>
       </Link>
@@ -79,43 +79,107 @@ const QuestionItem = memo(({ question, savedQuestions, toggleSaveQuestion, onCat
 ));
 
 // مكون منفصل للتنقل بين الصفحات
-const Pagination = memo(({ page, totalPages, onPageChange }) => (
-  <ol className="flex justify-center gap-1 font-medium text-xs">
-    <li>
-      <button
-        onClick={() => onPageChange(page - 1)}
-        disabled={page === 1}
-        className="inline-flex justify-center items-center bg-white hover:bg-greenLight dark:bg-gray-800 dark:hover:bg-primary disabled:opacity-50 border border-gray-100 dark:border-gray-900 rounded-sm size-8 dark:text-gray-50 rtl:rotate-180"
-      >
-        <span className="sr-only">Prev Page</span>
-        <ChevronLeft size={18} className="text-gray-500" />
-      </button>
-    </li>
-    {[...Array(totalPages)].map((_, index) => (
-      <li key={index} className="text-center">
+const Pagination = memo(({ page, totalPages, onPageChange }) => {
+  const renderPageNumbers = () => {
+    const pages = [];
+
+    const showPagesAround = 2; // عدد الصفحات قبل وبعد الحالية
+
+    let startPage = Math.max(2, page - showPagesAround);
+    let endPage = Math.min(totalPages - 1, page + showPagesAround);
+
+    // عرض الصفحة الأولى دائمًا
+    pages.push(
+      <li key={1}>
         <button
-          onClick={() => onPageChange(index + 1)}
-          className={`block size-8 rounded-sm border border-gray-100 dark:border-gray-900 text-center hover:bg-greenLight dark:hover:bg-primary leading-8 ${page === index + 1
-            ? "bg-primary hover:bg-primary text-white border-primary"
-            : "bg-white dark:bg-gray-800"
+          onClick={() => onPageChange(1)}
+          className={`size-8 rounded-sm border text-center hover:bg-greenLight dark:hover:bg-gray-700 leading-8 ${page === 1
+              ? "bg-primary text-white border-primary"
+              : "bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-900"
             }`}
         >
-          {index + 1}
+          1
         </button>
       </li>
-    ))}
-    <li>
-      <button
-        onClick={() => onPageChange(page + 1)}
-        disabled={page === totalPages}
-        className="inline-flex justify-center items-center bg-white hover:bg-greenLight dark:bg-gray-800 dark:hover:bg-primary disabled:opacity-50 border border-gray-100 dark:border-gray-900 rounded-sm size-8 dark:text-gray-50 rtl:rotate-180"
-      >
-        <span className="sr-only">Next Page</span>
-        <ChevronRight size={18} className="text-gray-500" />
-      </button>
-    </li>
-  </ol>
-));
+    );
+
+    // عرض "..." قبل الصفحات الوسطى إذا لزم الأمر
+    if (startPage > 2) {
+      pages.push(
+        <li key="start-ellipsis" className="px-1 text-gray-500">...</li>
+      );
+    }
+
+    // عرض الصفحات المحيطة بالحالية
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <li key={i}>
+          <button
+            onClick={() => onPageChange(i)}
+            className={`size-8 rounded-sm border text-center hover:bg-greenLight dark:hover:bg-gray-700 leading-8 ${page === i
+                ? "bg-primary text-white border-primary"
+                : "bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-900"
+              }`}
+          >
+            {i}
+          </button>
+        </li>
+      );
+    }
+
+    // عرض "..." بعد الصفحات الوسطى إذا لزم الأمر
+    if (endPage < totalPages - 1) {
+      pages.push(
+        <li key="end-ellipsis" className="px-1 text-gray-500">...</li>
+      );
+    }
+
+    // عرض آخر صفحة إذا كانت أكثر من 1
+    if (totalPages > 1) {
+      pages.push(
+        <li key={totalPages}>
+          <button
+            onClick={() => onPageChange(totalPages)}
+            className={`size-8 rounded-sm border text-center hover:bg-greenLight dark:hover:bg-gray-700 leading-8 ${page === totalPages
+                ? "bg-primary text-white border-primary"
+                : "bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-900"
+              }`}
+          >
+            {totalPages}
+          </button>
+        </li>
+      );
+    }
+
+    return pages;
+  };
+
+  return (
+    <ol className="flex flex-wrap justify-center items-center gap-1 mt-6 font-medium text-xs">
+      <li>
+        <button
+          onClick={() => onPageChange(page - 1)}
+          disabled={page === 1}
+          className="inline-flex justify-center items-center bg-white hover:bg-greenLight dark:bg-gray-800 dark:hover:bg-primary disabled:opacity-50 border dark:border-gray-700 rounded-sm size-8 dark:text-gray-50"
+        >
+          <ChevronLeft size={18} />
+        </button>
+      </li>
+
+      {renderPageNumbers()}
+
+      <li>
+        <button
+          onClick={() => onPageChange(page + 1)}
+          disabled={page === totalPages}
+          className="inline-flex justify-center items-center bg-white hover:bg-greenLight dark:bg-gray-800 dark:hover:bg-primary disabled:opacity-50 border dark:border-gray-700 rounded-sm size-8 dark:text-gray-50"
+        >
+          <ChevronRight size={18} />
+        </button>
+      </li>
+    </ol>
+  );
+});
 
 // مكون منفصل لرأس الصفحة
 const Header = memo(({ searchQuery, onSearchChange, onSearch, toggleOrder, order, intl }) => (
@@ -162,7 +226,7 @@ export default function QuestionsPage() {
   const selectedCategory = searchParams.get("category") || null;
   const initialSearch = searchParams.get("search") || "";
   const initialOrderBy = searchParams.get("order") || "desc";
-  const limit = 5;
+  const limit = 8;
 
   const [questions, setQuestions] = useState([]);
   const [savedQuestions, setSavedQuestions] = useState(new Set());
@@ -299,7 +363,7 @@ export default function QuestionsPage() {
     >
       <Suspense fallback={<SkeletonQuestionItem limit={limit} />}>
         <div className="mx-auto p-6 max-w-7xl">
-        <QuestionsMetadata />
+          <QuestionsMetadata />
           <CategoryTags
             categories={categories}
             onCategorySelect={handleCategorySelect}
