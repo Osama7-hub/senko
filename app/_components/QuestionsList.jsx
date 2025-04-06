@@ -94,8 +94,8 @@ const Pagination = memo(({ page, totalPages, onPageChange }) => {
         <button
           onClick={() => onPageChange(1)}
           className={`size-8 rounded-sm border text-center hover:bg-greenLight dark:hover:bg-gray-700 leading-8 ${page === 1
-              ? "bg-primary text-white border-primary"
-              : "bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-900"
+            ? "bg-primary text-white border-primary"
+            : "bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-900"
             }`}
         >
           1
@@ -117,8 +117,8 @@ const Pagination = memo(({ page, totalPages, onPageChange }) => {
           <button
             onClick={() => onPageChange(i)}
             className={`size-8 rounded-sm border text-center hover:bg-greenLight dark:hover:bg-gray-700 leading-8 ${page === i
-                ? "bg-primary text-white border-primary"
-                : "bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-900"
+              ? "bg-primary text-white border-primary"
+              : "bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-900"
               }`}
           >
             {i}
@@ -141,8 +141,8 @@ const Pagination = memo(({ page, totalPages, onPageChange }) => {
           <button
             onClick={() => onPageChange(totalPages)}
             className={`size-8 rounded-sm border text-center hover:bg-greenLight dark:hover:bg-gray-700 leading-8 ${page === totalPages
-                ? "bg-primary text-white border-primary"
-                : "bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-900"
+              ? "bg-primary text-white border-primary"
+              : "bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-900"
               }`}
           >
             {totalPages}
@@ -155,7 +155,7 @@ const Pagination = memo(({ page, totalPages, onPageChange }) => {
   };
 
   return (
-    <ol className="flex flex-wrap justify-center items-center gap-1 mt-6 font-medium text-xs">
+    <ol className="flex flex-wrap justify-center items-center gap-1 mt-8 font-medium text-xs">
       <li>
         <button
           onClick={() => onPageChange(page - 1)}
@@ -226,7 +226,7 @@ export default function QuestionsPage() {
   const selectedCategory = searchParams.get("category") || null;
   const initialSearch = searchParams.get("search") || "";
   const initialOrderBy = searchParams.get("order") || "desc";
-  const limit = 7;
+  const limit = 10;
 
   const [questions, setQuestions] = useState([]);
   const [savedQuestions, setSavedQuestions] = useState(new Set());
@@ -362,8 +362,8 @@ export default function QuestionsPage() {
       }
     >
       <Suspense fallback={<SkeletonQuestionItem limit={limit} />}>
+        <QuestionsMetadata />
         <div className="mx-auto p-6 max-w-7xl">
-          <QuestionsMetadata />
           <CategoryTags
             categories={categories}
             onCategorySelect={handleCategorySelect}
@@ -372,12 +372,12 @@ export default function QuestionsPage() {
           {
             loading ? (<SkeletonQuestionItem limit={limit} />) : noResults ?
               (
-                <p className="flex justify-center gap-2 mt-32 h-[85vh] text-gray-500 dark:text-gray-400 text-center">
+                <p className="flex justify-center gap-2 mt-32 min-h-[85vh] text-gray-500 dark:text-gray-400 text-center">
                   لم يتم العثور على نتائج تطابق البحث <Frown size={20} className="text-primary" />
                 </p>
               ) : (
                 <>
-                  <ul className="space-y-1 h-[85vh]">
+                  <ul className="space-y-1 min-h-[100vh]">
                     {questions.map((question) => (
                       <QuestionItem
                         key={question.id}
