@@ -63,18 +63,18 @@ export default function QuestionsPage() {
             <div className="p-6">
                 <Breadcrumb homelink={'/admin'} homeLinekTxt={<FormattedMessage id='breadcrumbMain' />} link1={'/admin/quiz'} link1Text={<FormattedMessage id='manageQuiz' />} />
 
-                <div className="flex items-center gap-4 mb-6">
+                <div className="flex flex-wrap items-center gap-4 mb-6">
                     <button
-                        className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded text-white"
+                        className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded w-full sm:w-fit text-white text-sm sm:text-lg"
                         onClick={() => router.push("/admin/quiz/new")}
                     >
                         + إضافة سؤال جديد
                     </button>
 
                     {/* ✅ قائمة تصفية حسب الفئة */}
-                    <div className="flex-grow">
+                    <div className="sm:flex-grow flex-grow-0 w-full sm:w-fit">
                         <select
-                            className="flex-grow-0 dark:bg-gray-700 shadow p-2 px-4 border focus:border-primary dark:border-gray-600 rounded focus:outline-none w-fit md:w-full"
+                            className="sm:flex-grow flex-grow-0 dark:bg-gray-700 shadow p-2 px-4 border focus:border-primary dark:border-gray-600 rounded focus:outline-none w-full sm:w-fit md:w-full"
                             value={categoryFilter}
                             onChange={(e) => {
                                 setCategoryFilter(e.target.value);
@@ -91,9 +91,10 @@ export default function QuestionsPage() {
 
                 {
                     questions.length >= 0 ?
-                        <table className="border w-full border-collapse">
+                    <div className="overflow-x-scroll">
+                        <table className="bg-white dark:bg-gray-800 shadow mt-4 border border-gray-300 dark:border-gray-700 w-full text-sm sm:text-lg border-collapse">
                             <thead>
-                                <tr className="bg-gray-200 dark:bg-gray-900">
+                                <tr className="bg-gray-200 dark:bg-gray-900 dark:border-gray-700 text-center">
                                     <th className="p-2 border dark:border-gray-700">السؤال</th>
                                     <th className="p-2 border dark:border-gray-700">الفئة</th>
                                     <th className="p-2 border dark:border-gray-700">النوع</th>
@@ -102,19 +103,19 @@ export default function QuestionsPage() {
                             </thead>
                             <tbody>
                                 {questions.map((q) => (
-                                    <tr key={q.id} className="border">
+                                    <tr key={q.id} className="border text-center">
                                         <td className="p-2 border dark:border-gray-700">{q.text}</td>
                                         <td className="p-2 border dark:border-gray-700">{q.categoryName || "عام"}</td>
                                         <td className="p-2 border dark:border-gray-700">{q.type === "MULTIPLE_CHOICE" ? "اختيار من متعدد" : "مطابقة"}</td>
-                                        <td className="gap-2 p-2 border dark:border-gray-700">
+                                        <td className="p-2 border dark:border-gray-700">
                                             <button
-                                                className="bg-green-700 hover:bg-green-600 mx-2 px-3 py-1 rounded text-white"
+                                                className="bg-green-700 hover:bg-green-600 my-1 px-3 py-1 rounded text-white"
                                                 onClick={() => router.push(`/admin/quiz/edit/${q.id}`)}
                                             >
                                                 تعديل
                                             </button>
                                             <button
-                                                className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-white"
+                                                className="bg-red-500 hover:bg-red-600 mx-2 px-3 py-1 rounded text-white"
                                                 onClick={() => {
                                                     setSelectedQuestionId(q.id); // تخزين ID السؤال المطلوب حذفه
                                                     setShowConfirm(true); // عرض التنبيه
@@ -129,6 +130,7 @@ export default function QuestionsPage() {
                                 ))}
                             </tbody>
                         </table>
+                    </div>
                         :
                         <p>لا توجد اسئلة</p>
                 }

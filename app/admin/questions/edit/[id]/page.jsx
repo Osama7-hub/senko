@@ -32,6 +32,9 @@ export default function EditQuestionPage() {
                 setContent(content || "");
                 setCategory(category || []);
 
+                // إذا رجع لك category كمصفوفة نصوص من الـ API، لازم تحولهم لكائنات
+                setCategory((category || []).map((name) => (typeof name === "string" ? { name } : name)));
+
                 // جلب الإجابة الرسمية المرتبطة بالسؤال
                 const answerResponse = await axios.get(`/api/answers?questionId=${id}`);
                 if (answerResponse.data) {
@@ -67,7 +70,7 @@ export default function EditQuestionPage() {
 
     // تصفية الفئات بناءً على الإدخال
     const filteredCategories = categories.filter((cat) =>
-        cat.toLowerCase().includes(inputValue.toLowerCase())
+        cat.name.toLowerCase().includes(inputValue.toLowerCase())
     );
 
     // إضافة فئة جديدة أو موجودة عند الضغط على Enter
@@ -75,10 +78,10 @@ export default function EditQuestionPage() {
         if (e.key === "Enter" && inputValue.trim()) {
             e.preventDefault();
             const newCategory = inputValue.trim();
-            if (!category.includes(newCategory)) {
-                setCategory([...category, newCategory]);
-                if (!categories.includes(newCategory)) {
-                    setCategories([...categories, newCategory]);
+            if (!category.some((cat) => cat.name === newCategory)) {
+                setCategory([...category, { name: newCategory }]);
+                if (!categories.some((cat) => cat.name === newCategory)) {
+                    setCategories([...categories, { name: newCategory }]);
                 }
             }
             setInputValue("");
@@ -88,8 +91,11 @@ export default function EditQuestionPage() {
 
     // اختيار فئة من القائمة المنسدلة
     const handleCategorySelect = (selectedCategory) => {
-        if (!category.includes(selectedCategory)) {
-            setCategory([...category, selectedCategory]);
+        // if (!category.includes(selectedCategory)) {
+        //     setCategory([...category, selectedCategory]);
+        // }
+        if (!category.some((cat) => cat.name === selectedCategory)) {
+            setCategory([...category, { name: selectedCategory }]);
         }
         setInputValue("");
         setIsDropdownOpen(false);
@@ -98,7 +104,7 @@ export default function EditQuestionPage() {
 
     // إزالة فئة من القائمة المختارة
     const handleRemoveCategory = (catToRemove) => {
-        setCategory(category.filter((cat) => cat !== catToRemove));
+        setCategory(category.filter((cat) => cat.name !== catToRemove));
     };
 
     // فتح/إغلاق القائمة المنسدلة
@@ -117,7 +123,8 @@ export default function EditQuestionPage() {
             await axios.put(`/api/questions/${id}`, {
                 title,
                 content,
-                category,
+                // category,
+                category: category.map((cat) => cat.name), // فقط الأسماء,
             });
 
             // جلب الإجابة الرسمية المرتبطة بالسؤال
@@ -148,9 +155,8 @@ export default function EditQuestionPage() {
     };
 
     return (
-        <MainLayout>
+        <MainLayout header={<span className="mb-4 font-bold text-2xl">تعديل السؤال والإجابة</span>}>
             <div className="p-6">
-                <h1 className="mb-4 font-bold text-2xl">تعديل السؤال والإجابة</h1>
 
                 {error && <p className="mb-4 text-red-500">{error}</p>}
 
@@ -179,15 +185,15 @@ export default function EditQuestionPage() {
                     <div className="relative">
                         <label className="block mb-2">الفئة</label>
                         <div className="flex flex-wrap gap-2 mb-2">
-                            {category.map((cat) => (
+                            {category.map((cat, index) => (
                                 <div
-                                    key={cat}
+                                    key={`${cat.name}-${index}`}
                                     className="flex items-center bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded"
                                 >
-                                    <span className="text-sm">{cat}</span>
+                                    <span className="text-sm">{cat.name}</span>
                                     <button
                                         type="button"
-                                        onClick={() => handleRemoveCategory(cat)}
+                                        onClick={() => handleRemoveCategory(cat.name)}
                                         className="ml-2 text-red-500 hover:text-red-700"
                                     >
                                         ×
@@ -211,11 +217,11 @@ export default function EditQuestionPage() {
                                 {filteredCategories.length > 0 ? (
                                     filteredCategories.map((cat) => (
                                         <div
-                                            key={cat}
-                                            onClick={() => handleCategorySelect(cat)}
+                                            key={cat.name}
+                                            onClick={() => handleCategorySelect(cat.name)}
                                             className="hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2 cursor-pointer"
                                         >
-                                            {cat}
+                                            {cat.name}
                                         </div>
                                     ))
                                 ) : inputValue.trim() ? (

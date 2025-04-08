@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import QuestionTable from "./QuestionTable";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { useIntl } from "react-intl";
 import { FormattedMessage } from 'react-intl';
 import Breadcrumb from "@/app/_components/Breadcrumb";
+import axios from "axios";
 
 export const dynamic = "force-dynamic"; // ⬅️ هذا السطر يمنع Next.js من معالجة الصفحة أثناء الـ build
 
@@ -20,6 +21,7 @@ export default function QuestionsClient() {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [category, setCategory] = useState("");
+    const [categories, setCategories] = useState([]);
     const [search, setSearch] = useState("");
 
     useEffect(() => {
@@ -27,6 +29,20 @@ export default function QuestionsClient() {
         setCategory(searchParams.get("category") || "");
         setSearch(searchParams.get("search") || "");
     }, [searchParams]);
+
+    // جلب الفئات من API
+    const fetchCategories = useCallback(async () => {
+        try {
+            const res = await axios.get("/api/categories");
+            setCategories(res.data || []);
+        } catch (error) {
+            console.error("خطاء في جلب الفئات:", error);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchCategories();
+    }, [fetchCategories]);
 
     useEffect(() => {
         async function fetchQuestions() {
@@ -88,9 +104,13 @@ export default function QuestionsClient() {
                         className="flex-grow-0 dark:bg-gray-700 shadow p-2 px-4 border focus:border-primary dark:border-gray-600 rounded focus:outline-none w-full md:w-fit"
                     >
                         <option value="">كل الفئات</option>
-                        <option value="javascript">JavaScript</option>
-                        <option value="react.js">React</option>
-                        <option value="nextjs">Next.js</option>
+                        {
+                            categories.map((cat) => {
+                                return (
+                                <option key={cat.name} value={cat.name}>{cat.name}</option>
+                                )
+                            })
+                        }
                     </select>
                 </div>
 

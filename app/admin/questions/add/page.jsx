@@ -24,9 +24,9 @@ export default function AddQuestion() {
         const fetchCategories = async () => {
             try {
                 const response = await axios.get("/api/categories");
-                setCategories(response.data);
+                setCategories(response.data || []);
             } catch (error) {
-                console.error("Error fetching categories:", error);
+                console.error("خطاء في جلب الفئات:", error);
             }
         };
 
@@ -35,7 +35,7 @@ export default function AddQuestion() {
 
     // تصفية الفئات بناءً على الإدخال
     const filteredCategories = categories.filter((cat) =>
-        cat.toLowerCase().includes(inputValue.toLowerCase())
+        cat.name.toLowerCase().includes(inputValue.toLowerCase())
     );
 
     // إضافة فئة جديدة أو موجودة عند الضغط على Enter
@@ -102,9 +102,8 @@ export default function AddQuestion() {
     };
 
     return (
-        <MainLayout>
+        <MainLayout header={<span className="mb-4 font-bold text-2xl">إضافة سؤال جديد</span>}>
             <div className="p-6">
-                <h1 className="mb-4 font-bold text-2xl">إضافة سؤال جديد</h1>
 
                 {error && <p className="mb-4 text-red-500">{error}</p>}
 
@@ -163,13 +162,13 @@ export default function AddQuestion() {
                         {isDropdownOpen && (
                             <div className="z-10 absolute bg-white dark:bg-gray-800 shadow-lg mt-1 border dark:border-gray-600 rounded w-full max-h-60 overflow-y-auto">
                                 {filteredCategories.length > 0 ? (
-                                    filteredCategories.map((cat) => (
+                                    filteredCategories.map((cat, index) => (
                                         <div
-                                            key={cat}
-                                            onClick={() => handleCategorySelect(cat)}
+                                            key={`${cat.name}-${index}`}
+                                            onClick={() => handleCategorySelect(cat.name)}
                                             className="hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2 cursor-pointer"
                                         >
-                                            {cat}
+                                            {cat.name}
                                         </div>
                                     ))
                                 ) : inputValue.trim() ? (
