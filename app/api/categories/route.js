@@ -16,7 +16,7 @@ export async function GET() {
         const questions = await prisma.question.findMany({
             select: { category: true },
         });
-
+/*
         const categoryMap = new Map();
 
         questions.forEach((q) => {
@@ -27,13 +27,13 @@ export async function GET() {
 
         const result = [...categoryMap.entries()].map(([name, count]) => ({ name, count }));
 
-        return NextResponse.json(result, { status: 200 });
+        
+        return NextResponse.json(result, uniqueCategories, { status: 200 });
+*/
+        // استخراج الفئات الفريدة في مصفوفة واحدة 
+        const uniqueCategories = [...new Set(questions.flatMap((q) => q.category))];
 
-
-        // // استخراج الفئات الفريدة في مصفوفة واحدة 
-        // const uniqueCategories = [...new Set(questions.flatMap((q) => q.category))];
-
-        // return NextResponse.json(uniqueCategories, { status: 200 });
+        return NextResponse.json(uniqueCategories, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: "حدث خطأ أثناء جلب الفئات" }, { status: 500 });
     }
