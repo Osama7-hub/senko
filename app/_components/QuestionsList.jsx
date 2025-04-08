@@ -25,17 +25,17 @@ import QuestionsMetadata from "./QuestionsMetadata";
 const CategoryTags = memo(({ categories, onCategorySelect, selectedCategory }) => (
   <div className="mb-8 max-w-full overflow-x-auto snap-start">
     <div className="flex flex-nowrap gap-2 mb-2 w-max">
-      {categories.map((category) => {
-        // const isCategorySelected = selectedCategory === category.name;
-        const isCategorySelected = selectedCategory === category;
+      {categories.map((category, index) => {
+        const isCategorySelected = selectedCategory === category.name;
+        // const isCategorySelected = selectedCategory === category;
         return (
           <button
-            key={category.name}
-            onClick={() => onCategorySelect(category, isCategorySelected)}
+            key={`${category.name}-${index}`}
+            onClick={() => onCategorySelect(category.name, isCategorySelected)}
             className={`flex items-center gap-1 px-3 py-1 text-sm hover:bg-primary dark:hover:bg-primary hover:text-white shadow capitalize ${isCategorySelected ? "bg-primary text-white" : "bg-gray-100 dark:bg-gray-800"
               }`}
           >
-           {/* <Tags size={15} /> {category} */}
+            {/* <Tags size={15} /> {category} */}
             {category.name} <span className="bg-greenLight dark:bg-gray-700 shadow rounded w-5 h-5 font-semibold text-primary text-sm leading-5">{category.count}</span>
           </button>
         );
@@ -277,7 +277,7 @@ export default function QuestionsPage() {
   const fetchCategories = useCallback(async () => {
     try {
       const res = await axios.get("/api/categories");
-      setCategories(res.data || []);
+      setCategories(res.data || []); // ← مصفوفة [{name, count}]
     } catch (error) {
       console.error("خطاء في جلب الفئات:", error);
     }
@@ -292,11 +292,11 @@ export default function QuestionsPage() {
   }, [fetchData]);
 
   // استخراج الفئات
-  const extractCategories = useCallback((questions) => {
-    const uniqueCategories = new Set();
-    questions.forEach((q) => q.category.forEach((cat) => uniqueCategories.add(cat)));
-    setCategories([...uniqueCategories]);
-  }, []);
+  // const extractCategories = useCallback((questions) => {
+  //   const uniqueCategories = new Set();
+  //   questions.forEach((q) => q.category.forEach((cat) => uniqueCategories.add(cat)));
+  //   setCategories([...uniqueCategories]);
+  // }, []);
 
   // التعامل مع البحث
   const handleSearchChange = useCallback((e) => {
@@ -309,9 +309,7 @@ export default function QuestionsPage() {
       if (e.key === "Enter") {
         router.push(`?search=${encodeURIComponent(searchQuery)}&page=1&order=${order}`);
       }
-    },
-    [searchQuery, order, router]
-  );
+    }, [searchQuery, order, router]);
 
   // تغيير الصفحة
   const handlePageChange = useCallback(
@@ -337,8 +335,7 @@ export default function QuestionsPage() {
   );
 
   // التعامل مع اختيار الفئة
-  const handleCategorySelect = useCallback(
-    (category, isCategorySelected) => {
+  const handleCategorySelect = useCallback((category, isCategorySelected) => {
       router.push(
         isCategorySelected
           ? "?page=1"

@@ -91,7 +91,7 @@ export default function QuestionsPage() {
 
                 {
                     questions.length >= 0 ?
-                    <div className="overflow-x-scroll">
+                    <div className="overflow-auto">
                         <table className="bg-white dark:bg-gray-800 shadow mt-4 border border-gray-300 dark:border-gray-700 w-full text-sm sm:text-lg border-collapse">
                             <thead>
                                 <tr className="bg-gray-200 dark:bg-gray-900 dark:border-gray-700 text-center">

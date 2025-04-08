@@ -48,7 +48,7 @@ export default function QuestionsClient() {
         async function fetchQuestions() {
             setLoading(true);
             try {
-                const query = new URLSearchParams({ page, limit: 3 });
+                const query = new URLSearchParams({ page, limit: 10 });
 
                 if (category) query.set("category", category);
                 if (search) query.set("search", search);
@@ -107,7 +107,7 @@ export default function QuestionsClient() {
                         {
                             categories.map((cat) => {
                                 return (
-                                <option key={cat.name} value={cat.name}>{cat.name}</option>
+                                    <option key={cat.name} value={cat.name}>{cat.name}</option>
                                 )
                             })
                         }
@@ -118,7 +118,9 @@ export default function QuestionsClient() {
                     <p>جارٍ تحميل الأسئلة...</p>
                 ) : (
                     <>
-                        <QuestionTable questions={questions} setQuestions={setQuestions} />
+                        <div className="overflow-auto">
+                            <QuestionTable questions={questions} setQuestions={setQuestions} />
+                        </div>
 
                         <div className="flex md:flex-row flex-col-reverse justify-between items-center">
                             <div className="flex items-center gap-2 mt-4">
