@@ -35,8 +35,8 @@ const CategoryTags = memo(({ categories, onCategorySelect, selectedCategory }) =
             className={`flex items-center gap-1 px-3 py-1 text-sm hover:bg-primary dark:hover:bg-primary hover:text-white shadow capitalize ${isCategorySelected ? "bg-primary text-white" : "bg-gray-100 dark:bg-gray-800"
               }`}
           >
-           <Tags size={15} /> {category}
-            {/* {category.name} <span className="bg-greenLight dark:bg-gray-700 shadow rounded w-5 h-5 font-semibold text-primary text-sm leading-5">{category.count}</span> */}
+           {/* <Tags size={15} /> {category} */}
+            {category.name} <span className="bg-greenLight dark:bg-gray-700 shadow rounded w-5 h-5 font-semibold text-primary text-sm leading-5">{category.count}</span>
           </button>
         );
       })}
